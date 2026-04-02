@@ -2,45 +2,9 @@ import { TrendingUp, FileText, Receipt, Users, ArrowUpRight, Clock } from 'lucid
 import { Card } from '@/components/ui'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Header } from '@/components/layout/Header'
-
-const metrics = [
-  {
-    label: 'Total Revenue',
-    value: 'S$0.00',
-    change: '+0%',
-    changeType: 'neutral' as const,
-    icon: TrendingUp,
-    iconBg: 'bg-green-50',
-    iconColor: 'text-green-600',
-  },
-  {
-    label: 'Outstanding',
-    value: 'S$0.00',
-    change: '0 invoices',
-    changeType: 'neutral' as const,
-    icon: Receipt,
-    iconBg: 'bg-orange-50',
-    iconColor: 'text-orange-600',
-  },
-  {
-    label: 'Active Quotes',
-    value: '0',
-    change: '0% conversion',
-    changeType: 'neutral' as const,
-    icon: FileText,
-    iconBg: 'bg-blue-50',
-    iconColor: 'text-blue-600',
-  },
-  {
-    label: 'Total Clients',
-    value: '0',
-    change: '+0 this month',
-    changeType: 'neutral' as const,
-    icon: Users,
-    iconBg: 'bg-violet-50',
-    iconColor: 'text-violet-600',
-  },
-]
+import { createClient } from '@/lib/supabase/server'
+import { formatCurrency } from '@/lib/utils/currency'
+import type { Currency } from '@/types'
 
 const quickActions = [
   { label: 'New Quote', href: '/dashboard/quotes/new', description: 'Create a proposal for a client' },
@@ -49,7 +13,87 @@ const quickActions = [
   { label: 'Add Client', href: '/dashboard/clients/new', description: 'Add a new client record' },
 ]
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const defaultCurrency: Currency = 'SGD'
+
+  let totalRevenueCents = 0
+  let outstandingCents = 0
+  let activeQuotesCount = 0
+  let totalClientsCount = 0
+  let outstandingCount = 0
+
+  if (user) {
+    const [paidRes, sentRes, quotesRes, clientsRes] = await Promise.all([
+      supabase
+        .from('invoices')
+        .select('total_cents')
+        .eq('tenant_id', user.id)
+        .eq('status', 'paid'),
+      supabase
+        .from('invoices')
+        .select('total_cents')
+        .eq('tenant_id', user.id)
+        .in('status', ['sent', 'viewed', 'overdue']),
+      supabase
+        .from('quotes')
+        .select('id', { count: 'exact', head: true })
+        .eq('tenant_id', user.id)
+        .in('status', ['draft', 'sent']),
+      supabase
+        .from('clients')
+        .select('id', { count: 'exact', head: true })
+        .eq('tenant_id', user.id),
+    ])
+
+    totalRevenueCents = (paidRes.data ?? []).reduce((s, i) => s + (i.total_cents ?? 0), 0)
+    outstandingCents = (sentRes.data ?? []).reduce((s, i) => s + (i.total_cents ?? 0), 0)
+    outstandingCount = sentRes.data?.length ?? 0
+    activeQuotesCount = quotesRes.count ?? 0
+    totalClientsCount = clientsRes.count ?? 0
+  }
+
+  const metrics = [
+    {
+      label: 'Total Revenue',
+      value: formatCurrency(totalRevenueCents, defaultCurrency),
+      change: 'Paid invoices',
+      changeType: 'neutral' as const,
+      icon: TrendingUp,
+      iconBg: 'bg-green-50',
+      iconColor: 'text-green-600',
+    },
+    {
+      label: 'Outstanding',
+      value: formatCurrency(outstandingCents, defaultCurrency),
+      change: `${outstandingCount} invoice${outstandingCount !== 1 ? 's' : ''}`,
+      changeType: 'neutral' as const,
+      icon: Receipt,
+      iconBg: 'bg-orange-50',
+      iconColor: 'text-orange-600',
+    },
+    {
+      label: 'Active Quotes',
+      value: String(activeQuotesCount),
+      change: 'Draft & sent',
+      changeType: 'neutral' as const,
+      icon: FileText,
+      iconBg: 'bg-blue-50',
+      iconColor: 'text-blue-600',
+    },
+    {
+      label: 'Total Clients',
+      value: String(totalClientsCount),
+      change: 'All time',
+      changeType: 'neutral' as const,
+      icon: Users,
+      iconBg: 'bg-violet-50',
+      iconColor: 'text-violet-600',
+    },
+  ]
+
   return (
     <div>
       <Header title="Dashboard" />
