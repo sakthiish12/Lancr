@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, FileText, FileSignature, Receipt,
-  Users, Settings, Zap, X, ChevronRight
+  Users, Settings, Zap, X, ChevronRight, Target
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/stores/ui'
@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/contracts', label: 'Contracts', icon: FileSignature },
   { href: '/invoices', label: 'Invoices', icon: Receipt },
   { href: '/clients', label: 'Clients', icon: Users },
+  { href: '/leads', label: 'Leads', icon: Target },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
 

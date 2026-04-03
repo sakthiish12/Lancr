@@ -608,6 +608,78 @@ export async function sendInvoiceEmailAction(invoiceId: string): Promise<ActionR
   }
 }
 
+// ── Leads ─────────────────────────────────────────────────────────────────
+
+export interface CreateLeadData {
+  name: string
+  email?: string
+  company?: string
+  phone?: string
+  status?: string
+  source?: string
+  value_cents?: number
+  notes?: string
+}
+
+export async function createLeadAction(data: CreateLeadData): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { data: lead, error } = await supabase
+    .from('leads')
+    .insert({
+      tenant_id: user.id,
+      name: data.name,
+      email: data.email ?? null,
+      company: data.company ?? null,
+      phone: data.phone ?? null,
+      status: data.status ?? 'new',
+      source: data.source ?? null,
+      value_cents: data.value_cents ?? 0,
+      notes: data.notes ?? null,
+    })
+    .select('id')
+    .single()
+
+  if (error) return { error: error.message }
+  revalidatePath('/leads')
+  return { success: true, id: lead.id }
+}
+
+export async function updateLeadAction(id: string, data: Partial<CreateLeadData>): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase
+    .from('leads')
+    .update({ ...data, updated_at: new Date().toISOString() })
+    .eq('id', id)
+    .eq('tenant_id', user.id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/leads')
+  revalidatePath(`/leads/${id}`)
+  return { success: true }
+}
+
+export async function deleteLeadAction(id: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase
+    .from('leads')
+    .delete()
+    .eq('id', id)
+    .eq('tenant_id', user.id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/leads')
+  return { success: true }
+}
+
 export async function sendQuoteEmailAction(quoteId: string): Promise<ActionResult> {
   const supabase = await createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()

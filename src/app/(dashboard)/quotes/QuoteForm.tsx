@@ -103,7 +103,7 @@ export function QuoteForm({ clients }: QuoteFormProps) {
             const { updateQuoteStatusAction } = await import('../actions')
             await updateQuoteStatusAction(result.id, 'sent')
           }
-          router.push('/quotes')
+          router.push(`/quotes/${result.id}`)
         }
       })
     }

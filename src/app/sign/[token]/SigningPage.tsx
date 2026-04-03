@@ -20,6 +20,9 @@ export function SigningPage({ contract, token }: Props) {
   const [signature, setSignature] = useState('')
   const [agreed, setAgreed] = useState(false)
   const [error, setError] = useState('')
+  const [signedAt, setSignedAt] = useState<string | null>(null)
+  const [confirmedName, setConfirmedName] = useState<string | null>(null)
+  const [confirmedEmail, setConfirmedEmail] = useState<string | null>(null)
 
   function handleSign() {
     if (!signerName || !signerEmail || !signature || !agreed) {
@@ -38,6 +41,9 @@ export function SigningPage({ contract, token }: Props) {
       if ('error' in result) {
         setError(result.error)
       } else {
+        setSignedAt(new Date().toLocaleString('en-SG', { timeZone: 'Asia/Singapore' }))
+        setConfirmedName(signerName)
+        setConfirmedEmail(signerEmail)
         setDone(true)
       }
     })
@@ -58,12 +64,12 @@ export function SigningPage({ contract, token }: Props) {
         </div>
 
         <div className="rounded-xl border border-green-200 bg-green-50 p-5 text-sm text-green-800">
-          {contract.signed_at && (
-            <p>Signed on <strong>{formatDateTime(contract.signed_at)}</strong></p>
+          {(signedAt ?? contract.signed_at) && (
+            <p>Signed on <strong>{signedAt ?? formatDateTime(contract.signed_at!)}</strong></p>
           )}
-          {contract.signer_name && (
-            <p className="mt-1">By <strong>{contract.signer_name}</strong>
-              {contract.signer_email ? ` (${contract.signer_email})` : ''}
+          {(confirmedName ?? contract.signer_name) && (
+            <p className="mt-1">By <strong>{confirmedName ?? contract.signer_name}</strong>
+              {(confirmedEmail ?? contract.signer_email) ? ` (${confirmedEmail ?? contract.signer_email})` : ''}
             </p>
           )}
         </div>
