@@ -7,31 +7,31 @@ const settingsSections = [
     icon: Building2,
     title: 'Business Profile',
     description: 'Update your business name, logo, and contact details',
-    href: '/dashboard/settings/business',
+    href: '/settings/business',
   },
   {
     icon: Globe,
     title: 'Tax & Compliance',
     description: 'Configure GST registration, tax rates, and InvoiceNow settings',
-    href: '/dashboard/settings/tax',
+    href: '/settings/tax',
   },
   {
     icon: CreditCard,
     title: 'Payment Methods',
     description: 'Connect Stripe, set up PayNow QR, and manage bank details',
-    href: '/dashboard/settings/payments',
+    href: '/settings/payments',
   },
   {
     icon: Bell,
     title: 'Notifications',
     description: 'Configure email reminders for invoices and quotes',
-    href: '/dashboard/settings/notifications',
+    href: '/settings/notifications',
   },
   {
     icon: Shield,
     title: 'Account & Security',
     description: 'Manage your password, sessions, and account settings',
-    href: '/dashboard/settings/account',
+    href: '/settings/account',
   },
 ]
 

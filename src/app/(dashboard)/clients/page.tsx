@@ -29,7 +29,7 @@ export default async function ClientsPage() {
           title="Clients"
           description="Manage your client relationships"
           action={
-            <Link href="/dashboard/clients/new">
+            <Link href="/clients/new">
               <Button>
                 <Plus className="h-4 w-4" />
                 Add Client
@@ -45,7 +45,7 @@ export default async function ClientsPage() {
             </div>
             <h3 className="mt-4 text-sm font-semibold text-gray-900">No clients yet</h3>
             <p className="mt-1 text-sm text-gray-500">Add your first client to get started</p>
-            <Link href="/dashboard/clients/new" className="mt-4">
+            <Link href="/clients/new" className="mt-4">
               <Button size="sm">
                 <Plus className="h-4 w-4" />
                 Add Client

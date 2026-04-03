@@ -87,7 +87,7 @@ export async function createClientAction(data: CreateClientData): Promise<Action
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/clients')
+  revalidatePath('/clients')
   return { success: true, id: client.id }
 }
 
@@ -104,8 +104,8 @@ export async function updateClientAction(id: string, data: Partial<CreateClientD
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/clients')
-  revalidatePath(`/dashboard/clients/${id}`)
+  revalidatePath('/clients')
+  revalidatePath(`/clients/${id}`)
   return { success: true }
 }
 
@@ -122,7 +122,7 @@ export async function deleteClientAction(id: string): Promise<ActionResult> {
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/clients')
+  revalidatePath('/clients')
   return { success: true }
 }
 
@@ -177,7 +177,7 @@ export async function createQuoteAction(data: CreateQuoteData): Promise<ActionRe
     if (lineError) return { error: lineError.message }
   }
 
-  revalidatePath('/dashboard/quotes')
+  revalidatePath('/quotes')
   return { success: true, id: quote.id }
 }
 
@@ -197,8 +197,8 @@ export async function updateQuoteAction(
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/quotes')
-  revalidatePath(`/dashboard/quotes/${id}`)
+  revalidatePath('/quotes')
+  revalidatePath(`/quotes/${id}`)
   return { success: true }
 }
 
@@ -215,7 +215,7 @@ export async function deleteQuoteAction(id: string): Promise<ActionResult> {
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/quotes')
+  revalidatePath('/quotes')
   return { success: true }
 }
 
@@ -232,8 +232,8 @@ export async function updateQuoteStatusAction(id: string, status: QuoteStatus): 
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/quotes')
-  revalidatePath(`/dashboard/quotes/${id}`)
+  revalidatePath('/quotes')
+  revalidatePath(`/quotes/${id}`)
   return { success: true }
 }
 
@@ -286,7 +286,7 @@ export async function createInvoiceAction(data: CreateInvoiceData): Promise<Acti
     if (lineError) return { error: lineError.message }
   }
 
-  revalidatePath('/dashboard/invoices')
+  revalidatePath('/invoices')
   return { success: true, id: invoice.id }
 }
 
@@ -353,7 +353,7 @@ export async function createInvoiceFromQuoteAction(quoteId: string): Promise<Act
     if (lineError) return { error: lineError.message }
   }
 
-  revalidatePath('/dashboard/invoices')
+  revalidatePath('/invoices')
   return { success: true, id: invoice.id }
 }
 
@@ -373,8 +373,8 @@ export async function updateInvoiceAction(
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/invoices')
-  revalidatePath(`/dashboard/invoices/${id}`)
+  revalidatePath('/invoices')
+  revalidatePath(`/invoices/${id}`)
   return { success: true }
 }
 
@@ -391,7 +391,7 @@ export async function deleteInvoiceAction(id: string): Promise<ActionResult> {
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/invoices')
+  revalidatePath('/invoices')
   return { success: true }
 }
 
@@ -413,8 +413,8 @@ export async function updateInvoiceStatusAction(id: string, status: InvoiceStatu
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/invoices')
-  revalidatePath(`/dashboard/invoices/${id}`)
+  revalidatePath('/invoices')
+  revalidatePath(`/invoices/${id}`)
   return { success: true }
 }
 
@@ -449,7 +449,7 @@ export async function createContractAction(data: CreateContractData): Promise<Ac
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/contracts')
+  revalidatePath('/contracts')
   return { success: true, id: contract.id }
 }
 
@@ -469,8 +469,8 @@ export async function updateContractAction(
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/contracts')
-  revalidatePath(`/dashboard/contracts/${id}`)
+  revalidatePath('/contracts')
+  revalidatePath(`/contracts/${id}`)
   return { success: true }
 }
 
@@ -487,8 +487,8 @@ export async function sendContractAction(id: string): Promise<ActionResult> {
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/contracts')
-  revalidatePath(`/dashboard/contracts/${id}`)
+  revalidatePath('/contracts')
+  revalidatePath(`/contracts/${id}`)
   return { success: true }
 }
 
@@ -505,7 +505,7 @@ export async function deleteContractAction(id: string): Promise<ActionResult> {
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/contracts')
+  revalidatePath('/contracts')
   return { success: true }
 }
 
@@ -554,8 +554,8 @@ export async function updateTenantAction(data: UpdateTenantData): Promise<Action
 
   if (error) return { error: error.message }
 
-  revalidatePath('/dashboard/settings/business')
-  revalidatePath('/dashboard/settings/tax')
+  revalidatePath('/settings/business')
+  revalidatePath('/settings/tax')
   revalidatePath('/dashboard')
   return { success: true }
 }
@@ -598,8 +598,8 @@ export async function sendInvoiceEmailAction(invoiceId: string): Promise<ActionR
         .update({ status: 'sent' })
         .eq('id', invoiceId)
         .eq('tenant_id', user.id)
-      revalidatePath(`/dashboard/invoices/${invoiceId}`)
-      revalidatePath('/dashboard/invoices')
+      revalidatePath(`/invoices/${invoiceId}`)
+      revalidatePath('/invoices')
     }
 
     return { success: true }
@@ -644,8 +644,8 @@ export async function sendQuoteEmailAction(quoteId: string): Promise<ActionResul
         .update({ status: 'sent' })
         .eq('id', quoteId)
         .eq('tenant_id', user.id)
-      revalidatePath(`/dashboard/quotes/${quoteId}`)
-      revalidatePath('/dashboard/quotes')
+      revalidatePath(`/quotes/${quoteId}`)
+      revalidatePath('/quotes')
     }
 
     return { success: true }

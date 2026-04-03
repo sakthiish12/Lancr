@@ -11,11 +11,11 @@ import { useUIStore } from '@/stores/ui'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/dashboard/quotes', label: 'Quotes', icon: FileText },
-  { href: '/dashboard/contracts', label: 'Contracts', icon: FileSignature },
-  { href: '/dashboard/invoices', label: 'Invoices', icon: Receipt },
-  { href: '/dashboard/clients', label: 'Clients', icon: Users },
-  { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+  { href: '/quotes', label: 'Quotes', icon: FileText },
+  { href: '/contracts', label: 'Contracts', icon: FileSignature },
+  { href: '/invoices', label: 'Invoices', icon: Receipt },
+  { href: '/clients', label: 'Clients', icon: Users },
+  { href: '/settings', label: 'Settings', icon: Settings },
 ]
 
 export function Sidebar() {

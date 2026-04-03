@@ -78,7 +78,7 @@ export function ContractForm({ clients, businessName }: Props) {
       if ('error' in result) {
         alert(result.error)
       } else if ('id' in result && result.id) {
-        router.push(`/dashboard/contracts/${result.id}`)
+        router.push(`/contracts/${result.id}`)
       }
     })
   }
@@ -94,7 +94,7 @@ export function ContractForm({ clients, businessName }: Props) {
           {clients.length === 0 ? (
             <p className="text-sm text-gray-500">
               No clients yet.{' '}
-              <a href="/dashboard/clients/new" className="text-violet-600 hover:underline">
+              <a href="/clients/new" className="text-violet-600 hover:underline">
                 Add a client first
               </a>
             </p>

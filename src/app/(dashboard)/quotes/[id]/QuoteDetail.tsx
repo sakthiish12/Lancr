@@ -51,7 +51,7 @@ export function QuoteDetail({ quote }: Props) {
       if ('error' in result) {
         alert(result.error)
       } else if ('id' in result && result.id) {
-        router.push(`/dashboard/invoices/${result.id}`)
+        router.push(`/invoices/${result.id}`)
       }
     })
   }
@@ -61,7 +61,7 @@ export function QuoteDetail({ quote }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <Link href="/dashboard/quotes" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-3 block">
+          <Link href="/quotes" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-3 block">
             <ArrowLeft className="h-4 w-4 inline mr-1" />
             Back to Quotes
           </Link>

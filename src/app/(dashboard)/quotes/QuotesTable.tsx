@@ -88,7 +88,7 @@ export function QuotesTable({ quotes }: QuotesTableProps) {
                   <tr key={quote.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3 text-sm font-mono text-gray-700">{quote.quote_number}</td>
                     <td className="px-4 py-3">
-                      <Link href={`/dashboard/quotes/${quote.id}`} className="font-medium text-gray-900 hover:text-violet-700">
+                      <Link href={`/quotes/${quote.id}`} className="font-medium text-gray-900 hover:text-violet-700">
                         {quote.title}
                       </Link>
                     </td>
@@ -114,7 +114,7 @@ export function QuotesTable({ quotes }: QuotesTableProps) {
                     <td className="px-4 py-3 text-sm text-gray-500">{formatDate(quote.created_at)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <Link href={`/dashboard/quotes/${quote.id}`}>
+                        <Link href={`/quotes/${quote.id}`}>
                           <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
                             <Pencil className="h-3.5 w-3.5" />
                           </Button>

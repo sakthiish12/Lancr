@@ -73,7 +73,7 @@ export function ClientsTable({ clients }: ClientsTableProps) {
               filtered.map((client) => (
                 <tr key={client.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3">
-                    <Link href={`/dashboard/clients/${client.id}`} className="font-medium text-gray-900 hover:text-violet-700">
+                    <Link href={`/clients/${client.id}`} className="font-medium text-gray-900 hover:text-violet-700">
                       {client.name}
                     </Link>
                   </td>
@@ -86,7 +86,7 @@ export function ClientsTable({ clients }: ClientsTableProps) {
                   <td className="px-4 py-3 text-sm text-gray-500">{formatDate(client.created_at)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <Link href={`/dashboard/clients/${client.id}`}>
+                      <Link href={`/clients/${client.id}`}>
                         <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
                           <Pencil className="h-3.5 w-3.5" />
                         </Button>

@@ -51,7 +51,7 @@ export default function NewClientPage() {
       if ('error' in result) {
         setError(result.error)
       } else {
-        router.push('/dashboard/clients')
+        router.push('/clients')
       }
     })
   }
@@ -61,7 +61,7 @@ export default function NewClientPage() {
       <Header title="New Client" />
       <div className="p-6 max-w-2xl">
         <div className="mb-6">
-          <Link href="/dashboard/clients" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
+          <Link href="/clients" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
             <ArrowLeft className="h-4 w-4" />
             Back to Clients
           </Link>
@@ -137,7 +137,7 @@ export default function NewClientPage() {
           </div>
 
           <div className="flex items-center justify-end gap-3 pt-2">
-            <Link href="/dashboard/clients">
+            <Link href="/clients">
               <Button type="button" variant="secondary">Cancel</Button>
             </Link>
             <Button type="submit" loading={isPending}>

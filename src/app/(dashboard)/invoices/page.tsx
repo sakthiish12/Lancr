@@ -49,7 +49,7 @@ export default async function InvoicesPage() {
           title="Invoices"
           description="Track and collect payments from clients"
           action={
-            <Link href="/dashboard/invoices/new">
+            <Link href="/invoices/new">
               <Button>
                 <Plus className="h-4 w-4" />
                 New Invoice
@@ -78,7 +78,7 @@ export default async function InvoicesPage() {
             </div>
             <h3 className="mt-4 text-sm font-semibold text-gray-900">No invoices yet</h3>
             <p className="mt-1 text-sm text-gray-500">Create an invoice to start collecting payments</p>
-            <Link href="/dashboard/invoices/new" className="mt-4">
+            <Link href="/invoices/new" className="mt-4">
               <Button size="sm">
                 <Plus className="h-4 w-4" />
                 Create Invoice

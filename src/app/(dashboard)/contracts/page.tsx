@@ -32,7 +32,7 @@ export default async function ContractsPage() {
           title="Contracts"
           description="Create and manage legally binding agreements"
           action={
-            <Link href="/dashboard/contracts/new">
+            <Link href="/contracts/new">
               <Button><Plus className="h-4 w-4" />New Contract</Button>
             </Link>
           }
@@ -45,7 +45,7 @@ export default async function ContractsPage() {
             </div>
             <h3 className="mt-4 text-sm font-semibold text-gray-900">No contracts yet</h3>
             <p className="mt-1 text-sm text-gray-500">Create your first contract from a template</p>
-            <Link href="/dashboard/contracts/new" className="mt-4">
+            <Link href="/contracts/new" className="mt-4">
               <Button size="sm"><Plus className="h-4 w-4" />New Contract</Button>
             </Link>
           </div>
@@ -63,7 +63,7 @@ export default async function ContractsPage() {
                 {typed.map(contract => (
                   <tr key={contract.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3">
-                      <Link href={`/dashboard/contracts/${contract.id}`} className="text-sm font-medium text-gray-900 hover:text-violet-600">
+                      <Link href={`/contracts/${contract.id}`} className="text-sm font-medium text-gray-900 hover:text-violet-600">
                         {contract.title}
                       </Link>
                     </td>
@@ -81,7 +81,7 @@ export default async function ContractsPage() {
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-500">{formatDate(contract.created_at)}</td>
                     <td className="px-4 py-3 text-right">
-                      <Link href={`/dashboard/contracts/${contract.id}`}>
+                      <Link href={`/contracts/${contract.id}`}>
                         <Button variant="ghost" size="sm">View</Button>
                       </Link>
                     </td>

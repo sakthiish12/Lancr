@@ -29,7 +29,7 @@ export default async function QuotesPage() {
           title="Quotes"
           description="Create and manage your client proposals"
           action={
-            <Link href="/dashboard/quotes/new">
+            <Link href="/quotes/new">
               <Button>
                 <Plus className="h-4 w-4" />
                 New Quote
@@ -45,7 +45,7 @@ export default async function QuotesPage() {
             </div>
             <h3 className="mt-4 text-sm font-semibold text-gray-900">No quotes yet</h3>
             <p className="mt-1 text-sm text-gray-500">Create your first quote to send to a client</p>
-            <Link href="/dashboard/quotes/new" className="mt-4">
+            <Link href="/quotes/new" className="mt-4">
               <Button size="sm">
                 <Plus className="h-4 w-4" />
                 Create Quote

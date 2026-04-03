@@ -7,10 +7,10 @@ import { formatCurrency } from '@/lib/utils/currency'
 import type { Currency } from '@/types'
 
 const quickActions = [
-  { label: 'New Quote', href: '/dashboard/quotes/new', description: 'Create a proposal for a client' },
-  { label: 'New Invoice', href: '/dashboard/invoices/new', description: 'Bill a client for work done' },
-  { label: 'New Contract', href: '/dashboard/contracts/new', description: 'Draft a service agreement' },
-  { label: 'Add Client', href: '/dashboard/clients/new', description: 'Add a new client record' },
+  { label: 'New Quote', href: '/quotes/new', description: 'Create a proposal for a client' },
+  { label: 'New Invoice', href: '/invoices/new', description: 'Bill a client for work done' },
+  { label: 'New Contract', href: '/contracts/new', description: 'Draft a service agreement' },
+  { label: 'Add Client', href: '/clients/new', description: 'Add a new client record' },
 ]
 
 export default async function DashboardPage() {

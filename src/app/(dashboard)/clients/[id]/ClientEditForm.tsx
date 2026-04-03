@@ -71,7 +71,7 @@ export function ClientEditForm({ client, quotesCount, invoicesCount }: Props) {
       if ('error' in result) {
         setError(result.error)
       } else {
-        router.push('/dashboard/clients')
+        router.push('/clients')
       }
     })
   }
@@ -79,7 +79,7 @@ export function ClientEditForm({ client, quotesCount, invoicesCount }: Props) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/dashboard/clients" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/clients" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
           <ArrowLeft className="h-4 w-4" />
           Back to Clients
         </Link>

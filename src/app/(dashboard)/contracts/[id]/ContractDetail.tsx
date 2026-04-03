@@ -45,7 +45,7 @@ export function ContractDetail({ contract }: Props) {
       if ('error' in result) {
         alert(result.error)
       } else {
-        router.push('/dashboard/contracts')
+        router.push('/contracts')
       }
     })
   }
@@ -63,7 +63,7 @@ export function ContractDetail({ contract }: Props) {
       <div className="flex items-start justify-between">
         <div>
           <Link
-            href="/dashboard/contracts"
+            href="/contracts"
             className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-3 block"
           >
             <ArrowLeft className="h-4 w-4 inline mr-1" />

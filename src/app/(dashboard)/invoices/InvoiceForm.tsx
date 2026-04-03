@@ -95,7 +95,7 @@ export function InvoiceForm({ clients }: InvoiceFormProps) {
       if ('error' in result) {
         setError(result.error)
       } else {
-        router.push('/dashboard/invoices')
+        router.push('/invoices')
       }
     })
   }
@@ -103,7 +103,7 @@ export function InvoiceForm({ clients }: InvoiceFormProps) {
   return (
     <div className="max-w-5xl space-y-6">
       <div className="mb-2">
-        <Link href="/dashboard/invoices" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/invoices" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
           <ArrowLeft className="h-4 w-4" />
           Back to Invoices
         </Link>
@@ -272,7 +272,7 @@ export function InvoiceForm({ clients }: InvoiceFormProps) {
         </div>
 
         <div className="flex items-center justify-end gap-3">
-          <Link href="/dashboard/invoices">
+          <Link href="/invoices">
             <Button type="button" variant="secondary">Cancel</Button>
           </Link>
           <Button type="submit" loading={isPending}>

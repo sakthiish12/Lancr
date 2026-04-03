@@ -103,7 +103,7 @@ export function QuoteForm({ clients }: QuoteFormProps) {
             const { updateQuoteStatusAction } = await import('../actions')
             await updateQuoteStatusAction(result.id, 'sent')
           }
-          router.push('/dashboard/quotes')
+          router.push('/quotes')
         }
       })
     }
@@ -112,7 +112,7 @@ export function QuoteForm({ clients }: QuoteFormProps) {
   return (
     <div className="max-w-5xl space-y-6">
       <div className="mb-2">
-        <Link href="/dashboard/quotes" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/quotes" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700">
           <ArrowLeft className="h-4 w-4" />
           Back to Quotes
         </Link>
@@ -289,7 +289,7 @@ export function QuoteForm({ clients }: QuoteFormProps) {
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3">
-        <Link href="/dashboard/quotes">
+        <Link href="/quotes">
           <Button variant="secondary">Cancel</Button>
         </Link>
         <Button variant="outline" onClick={handleSubmit('draft')} loading={isPending}>

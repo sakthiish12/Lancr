@@ -109,7 +109,7 @@ export function InvoicesTable({ invoices }: InvoicesTableProps) {
                     <td className="px-4 py-3 text-sm text-gray-500">{formatDate(invoice.created_at)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
-                        <Link href={`/dashboard/invoices/${invoice.id}`}>
+                        <Link href={`/invoices/${invoice.id}`}>
                           <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
                             <Pencil className="h-3.5 w-3.5" />
                           </Button>
