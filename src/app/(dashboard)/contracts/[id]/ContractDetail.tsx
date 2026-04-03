@@ -24,7 +24,7 @@ export function ContractDetail({ contract }: Props) {
   const [isPending, startTransition] = useTransition()
   const [copied, setCopied] = useState(false)
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? '').trim()
   const signingUrl = `${appUrl}/sign/${contract.signing_token}`
 
   function handleSend() {

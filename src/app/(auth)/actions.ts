@@ -3,6 +3,8 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL?.trim() ?? ''
+
 export async function signInWithEmail(formData: FormData) {
   const email = formData.get('email') as string
   if (!email) return { error: 'Email is required' }
@@ -11,7 +13,7 @@ export async function signInWithEmail(formData: FormData) {
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      emailRedirectTo: `${APP_URL}/auth/callback`,
     },
   })
 
@@ -24,7 +26,7 @@ export async function signInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      redirectTo: `${APP_URL}/auth/callback`,
     },
   })
 

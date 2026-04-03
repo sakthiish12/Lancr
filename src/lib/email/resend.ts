@@ -6,6 +6,7 @@ import type { Invoice, Quote, Tenant, Client } from '@/types'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const FROM = 'Lancr <invoices@lancr.app>'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL?.trim() ?? ''
 
 // ─── Invoice email ─────────────────────────────────────────────────────────
 
@@ -20,7 +21,7 @@ export async function sendInvoiceEmail({
 }) {
   const total = formatCurrency(invoice.total_cents, invoice.currency)
   const due = invoice.due_date ? formatDate(invoice.due_date) : 'on receipt'
-  const pdfUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/pdf/invoice/${invoice.id}`
+  const pdfUrl = `${APP_URL}/api/pdf/invoice/${invoice.id}`
 
   const html = `
 <!DOCTYPE html>
@@ -109,7 +110,7 @@ export async function sendQuoteEmail({
 }) {
   const total = formatCurrency(quote.total_cents, quote.currency)
   const validUntil = quote.valid_until ? formatDate(quote.valid_until) : null
-  const pdfUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/pdf/quote/${quote.id}`
+  const pdfUrl = `${APP_URL}/api/pdf/quote/${quote.id}`
 
   const html = `
 <!DOCTYPE html>
