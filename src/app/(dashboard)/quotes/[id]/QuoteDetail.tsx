@@ -3,11 +3,11 @@
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, FileCheck, Send, ArrowRight, Download } from 'lucide-react'
+import { ArrowLeft, FileCheck, Send, ArrowRight, Download, Mail } from 'lucide-react'
 import { Button, Badge } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils/currency'
 import { formatDate } from '@/lib/utils/date'
-import { updateQuoteStatusAction, createInvoiceFromQuoteAction } from '../../actions'
+import { updateQuoteStatusAction, createInvoiceFromQuoteAction, sendQuoteEmailAction } from '../../actions'
 import { QUOTE_STATUSES } from '@/lib/constants'
 import type { Quote, QuoteLineItem } from '@/types'
 
@@ -21,6 +21,18 @@ export function QuoteDetail({ quote }: Props) {
 
   const statusInfo = QUOTE_STATUSES[quote.status]
   const lineItems = (quote.line_items ?? []) as QuoteLineItem[]
+
+  function emailClient() {
+    startTransition(async () => {
+      const result = await sendQuoteEmailAction(quote.id)
+      if ('error' in result) {
+        alert(result.error)
+      } else {
+        alert('Quote emailed to ' + (quote.client?.email ?? 'client') + ' ✓')
+        router.refresh()
+      }
+    })
+  }
 
   function markAs(status: 'sent' | 'approved') {
     startTransition(async () => {
@@ -69,6 +81,12 @@ export function QuoteDetail({ quote }: Props) {
               Download PDF
             </Button>
           </a>
+          {(quote.status === 'draft' || quote.status === 'sent') && (
+            <Button variant="outline" size="sm" onClick={emailClient} loading={isPending}>
+              <Mail className="h-4 w-4" />
+              Email Client
+            </Button>
+          )}
           {quote.status === 'draft' && (
             <Button variant="outline" size="sm" onClick={() => markAs('sent')} loading={isPending}>
               <Send className="h-4 w-4" />

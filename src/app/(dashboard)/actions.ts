@@ -2,7 +2,8 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import type { Currency, QuoteStatus, InvoiceStatus } from '@/types'
+import { sendInvoiceEmail, sendQuoteEmail } from '@/lib/email/resend'
+import type { Currency, QuoteStatus, InvoiceStatus, Invoice, Quote, Tenant, Client, InvoiceLineItem, QuoteLineItem } from '@/types'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -528,4 +529,127 @@ export async function signContractAction(
 
   if (error) return { error: error.message }
   return { success: true }
+}
+
+// ─── TENANT ACTIONS ───────────────────────────────────────────────────────────
+
+interface UpdateTenantData {
+  name?: string
+  business_name?: string
+  address?: string
+  currency?: Currency
+  gst_registered?: boolean
+  gst_number?: string | null
+}
+
+export async function updateTenantAction(data: UpdateTenantData): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase
+    .from('tenants')
+    .update(data)
+    .eq('id', user.id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/dashboard/settings/business')
+  revalidatePath('/dashboard/settings/tax')
+  revalidatePath('/dashboard')
+  return { success: true }
+}
+
+// ─── EMAIL ACTIONS ────────────────────────────────────────────────────────────
+
+export async function sendInvoiceEmailAction(invoiceId: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const [{ data: invoice }, { data: tenant }] = await Promise.all([
+    supabase
+      .from('invoices')
+      .select('*, client:clients(*), line_items:invoice_line_items(*)')
+      .eq('id', invoiceId)
+      .eq('tenant_id', user.id)
+      .single(),
+    supabase
+      .from('tenants')
+      .select('*')
+      .eq('id', user.id)
+      .single(),
+  ])
+
+  if (!invoice || !invoice.client) return { error: 'Invoice or client not found' }
+  if (!tenant) return { error: 'Tenant not found' }
+
+  try {
+    await sendInvoiceEmail({
+      invoice: invoice as Invoice & { line_items: InvoiceLineItem[] },
+      tenant: tenant as Tenant,
+      client: invoice.client as Client,
+    })
+
+    // Mark as sent if still draft
+    if (invoice.status === 'draft') {
+      await supabase
+        .from('invoices')
+        .update({ status: 'sent' })
+        .eq('id', invoiceId)
+        .eq('tenant_id', user.id)
+      revalidatePath(`/dashboard/invoices/${invoiceId}`)
+      revalidatePath('/dashboard/invoices')
+    }
+
+    return { success: true }
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Failed to send email' }
+  }
+}
+
+export async function sendQuoteEmailAction(quoteId: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const [{ data: quote }, { data: tenant }] = await Promise.all([
+    supabase
+      .from('quotes')
+      .select('*, client:clients(*), line_items:quote_line_items(*)')
+      .eq('id', quoteId)
+      .eq('tenant_id', user.id)
+      .single(),
+    supabase
+      .from('tenants')
+      .select('*')
+      .eq('id', user.id)
+      .single(),
+  ])
+
+  if (!quote || !quote.client) return { error: 'Quote or client not found' }
+  if (!tenant) return { error: 'Tenant not found' }
+
+  try {
+    await sendQuoteEmail({
+      quote: quote as Quote & { line_items: QuoteLineItem[] },
+      tenant: tenant as Tenant,
+      client: quote.client as Client,
+    })
+
+    // Mark as sent if still draft
+    if (quote.status === 'draft') {
+      await supabase
+        .from('quotes')
+        .update({ status: 'sent' })
+        .eq('id', quoteId)
+        .eq('tenant_id', user.id)
+      revalidatePath(`/dashboard/quotes/${quoteId}`)
+      revalidatePath('/dashboard/quotes')
+    }
+
+    return { success: true }
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Failed to send email' }
+  }
 }
