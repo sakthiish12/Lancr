@@ -416,3 +416,116 @@ export async function updateInvoiceStatusAction(id: string, status: InvoiceStatu
   revalidatePath(`/dashboard/invoices/${id}`)
   return { success: true }
 }
+
+// ─── Contract Actions ──────────────────────────────────────────────────────────
+
+interface CreateContractData {
+  client_id: string
+  quote_id?: string
+  template_type: 'service_agreement' | 'nda' | 'retainer'
+  title: string
+  content: string
+}
+
+export async function createContractAction(data: CreateContractData): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { data: contract, error } = await supabase
+    .from('contracts')
+    .insert({
+      tenant_id: user.id,
+      client_id: data.client_id,
+      quote_id: data.quote_id ?? null,
+      template_type: data.template_type,
+      title: data.title,
+      content: data.content,
+      status: 'draft',
+    })
+    .select('id')
+    .single()
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/dashboard/contracts')
+  return { success: true, id: contract.id }
+}
+
+export async function updateContractAction(
+  id: string,
+  data: { title?: string; content?: string }
+): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase
+    .from('contracts')
+    .update(data)
+    .eq('id', id)
+    .eq('tenant_id', user.id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/dashboard/contracts')
+  revalidatePath(`/dashboard/contracts/${id}`)
+  return { success: true }
+}
+
+export async function sendContractAction(id: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase
+    .from('contracts')
+    .update({ status: 'sent' })
+    .eq('id', id)
+    .eq('tenant_id', user.id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/dashboard/contracts')
+  revalidatePath(`/dashboard/contracts/${id}`)
+  return { success: true }
+}
+
+export async function deleteContractAction(id: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase
+    .from('contracts')
+    .delete()
+    .eq('id', id)
+    .eq('tenant_id', user.id)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/dashboard/contracts')
+  return { success: true }
+}
+
+export async function signContractAction(
+  signingToken: string,
+  data: { signer_name: string; signer_email: string; signature_data: string }
+): Promise<ActionResult> {
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('contracts')
+    .update({
+      status: 'signed',
+      signer_name: data.signer_name,
+      signer_email: data.signer_email,
+      signature_data: data.signature_data,
+      signed_at: new Date().toISOString(),
+    })
+    .eq('signing_token', signingToken)
+    .eq('status', 'sent')
+
+  if (error) return { error: error.message }
+  return { success: true }
+}

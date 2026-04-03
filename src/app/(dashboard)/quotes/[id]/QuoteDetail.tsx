@@ -3,7 +3,7 @@
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, FileCheck, Send, ArrowRight } from 'lucide-react'
+import { ArrowLeft, FileCheck, Send, ArrowRight, Download } from 'lucide-react'
 import { Button, Badge } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils/currency'
 import { formatDate } from '@/lib/utils/date'
@@ -63,6 +63,12 @@ export function QuoteDetail({ quote }: Props) {
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
+          <a href={`/api/pdf/quote/${quote.id}`} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4" />
+              Download PDF
+            </Button>
+          </a>
           {quote.status === 'draft' && (
             <Button variant="outline" size="sm" onClick={() => markAs('sent')} loading={isPending}>
               <Send className="h-4 w-4" />

@@ -3,7 +3,7 @@
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Send, CheckCircle } from 'lucide-react'
+import { ArrowLeft, Send, CheckCircle, Download } from 'lucide-react'
 import { Button, Badge } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils/currency'
 import { formatDate, formatDateTime } from '@/lib/utils/date'
@@ -51,6 +51,12 @@ export function InvoiceDetail({ invoice }: Props) {
         </div>
 
         <div className="flex items-center gap-2">
+          <a href={`/api/pdf/invoice/${invoice.id}`} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4" />
+              Download PDF
+            </Button>
+          </a>
           {invoice.status === 'draft' && (
             <Button variant="outline" size="sm" onClick={() => markAs('sent')} loading={isPending}>
               <Send className="h-4 w-4" />
