@@ -14,14 +14,17 @@ export async function sendInvoiceEmail({
   invoice,
   tenant,
   client,
+  payUrl,
 }: {
   invoice: Invoice
-  tenant: Tenant
+  tenant: Tenant & { portal_slug?: string }
   client: Client
+  payUrl?: string
 }) {
   const total = formatCurrency(invoice.total_cents, invoice.currency)
   const due = invoice.due_date ? formatDate(invoice.due_date) : 'on receipt'
   const pdfUrl = `${APP_URL}/api/pdf/invoice/${invoice.id}`
+  const portalUrl = payUrl ?? (tenant.portal_slug ? `${APP_URL}/portal/${tenant.portal_slug}/invoice/${invoice.id}` : null)
 
   const html = `
 <!DOCTYPE html>
@@ -60,8 +63,13 @@ export async function sendInvoiceEmail({
 
       <!-- CTA -->
       <div style="text-align:center;margin:0 0 28px">
-        <a href="${pdfUrl}" style="background:#7c3aed;color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;display:inline-block">
-          Download Invoice PDF
+        ${portalUrl ? `
+        <a href="${portalUrl}" style="background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:8px;font-size:16px;font-weight:700;display:inline-block;margin-bottom:12px">
+          Pay Now →
+        </a>
+        <br>` : ''}
+        <a href="${pdfUrl}" style="color:#7c3aed;text-decoration:none;font-size:14px;font-weight:500">
+          Download PDF
         </a>
       </div>
 

@@ -17,6 +17,7 @@ export interface Tenant {
   gst_registered: boolean
   gst_number: string | null
   address: string | null
+  plan: 'free' | 'pro'
   created_at: string
 }
 
@@ -108,9 +109,26 @@ export interface Invoice {
   payment_method: PaymentMethod | null
   stripe_payment_id: string | null
   notes: string | null
+  recurring_interval: 'weekly' | 'monthly' | 'quarterly' | 'yearly' | null
+  recurring_next_date: string | null
   created_at: string
   client?: Client
   line_items?: InvoiceLineItem[]
+}
+
+export type ExpenseCategory = 'software' | 'equipment' | 'travel' | 'meals' | 'marketing' | 'office' | 'professional' | 'other'
+
+export interface Expense {
+  id: string
+  tenant_id: string
+  description: string
+  amount_cents: number
+  currency: Currency
+  category: ExpenseCategory
+  date: string
+  notes: string | null
+  created_at: string
+  updated_at: string
 }
 
 export interface Payment {

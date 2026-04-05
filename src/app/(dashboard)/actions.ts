@@ -40,6 +40,7 @@ interface CreateInvoiceData {
   due_date?: string
   notes?: string
   line_items: LineItemInput[]
+  recurring_interval?: string
 }
 
 type ActionResult = { error: string } | { success: true; id?: string }
@@ -69,6 +70,13 @@ export async function createClientAction(data: CreateClientData): Promise<Action
   const supabase = await createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (authError || !user) return { error: 'Unauthorized' }
+
+  // Enforce free plan limit
+  const { data: tenantRow } = await supabase.from('tenants').select('plan').eq('id', user.id).single()
+  if (tenantRow?.plan !== 'pro') {
+    const { count } = await supabase.from('clients').select('id', { count: 'exact', head: true }).eq('tenant_id', user.id)
+    if ((count ?? 0) >= 3) return { error: 'Free plan limit: 3 clients. Upgrade to Pro for unlimited clients.' }
+  }
 
   const { data: client, error } = await supabase
     .from('clients')
@@ -249,6 +257,12 @@ export async function createInvoiceAction(data: CreateInvoiceData): Promise<Acti
     .select('*', { count: 'exact', head: true })
     .eq('tenant_id', user.id)
 
+  // Enforce free plan limit
+  const { data: tenantRow } = await supabase.from('tenants').select('plan').eq('id', user.id).single()
+  if (tenantRow?.plan !== 'pro' && (count ?? 0) >= 5) {
+    return { error: 'Free plan limit: 5 invoices. Upgrade to Pro for unlimited invoices.' }
+  }
+
   const invoiceNumber = `INV-${String((count ?? 0) + 1).padStart(4, '0')}`
   const totals = calcTotals(data.line_items)
 
@@ -265,6 +279,8 @@ export async function createInvoiceAction(data: CreateInvoiceData): Promise<Acti
       total_cents: totals.total_cents,
       due_date: data.due_date ?? null,
       notes: data.notes ?? null,
+      recurring_interval: data.recurring_interval ?? null,
+      recurring_next_date: data.recurring_interval && data.due_date ? data.due_date : null,
     })
     .select('id')
     .single()
@@ -585,10 +601,14 @@ export async function sendInvoiceEmailAction(invoiceId: string): Promise<ActionR
   if (!tenant) return { error: 'Tenant not found' }
 
   try {
+    const tenantWithSlug = tenant as Tenant & { portal_slug?: string }
     await sendInvoiceEmail({
       invoice: invoice as Invoice & { line_items: InvoiceLineItem[] },
-      tenant: tenant as Tenant,
+      tenant: tenantWithSlug,
       client: invoice.client as Client,
+      payUrl: tenantWithSlug.portal_slug
+        ? `${process.env.NEXT_PUBLIC_APP_URL}/portal/${tenantWithSlug.portal_slug}/invoice/${invoice.id}`
+        : undefined,
     })
 
     // Mark as sent if still draft
@@ -724,4 +744,109 @@ export async function sendQuoteEmailAction(quoteId: string): Promise<ActionResul
   } catch (err) {
     return { error: err instanceof Error ? err.message : 'Failed to send email' }
   }
+}
+
+// ─── OVERDUE DETECTION ────────────────────────────────────────────────────────
+
+export async function markOverdueInvoicesAction(): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const today = new Date().toISOString().split('T')[0]
+  const { error } = await supabase
+    .from('invoices')
+    .update({ status: 'overdue' })
+    .eq('tenant_id', user.id)
+    .in('status', ['sent', 'viewed'])
+    .lt('due_date', today)
+    .not('due_date', 'is', null)
+
+  if (error) return { error: error.message }
+  revalidatePath('/invoices')
+  return { success: true }
+}
+
+// ─── PAYMENT REMINDER ─────────────────────────────────────────────────────────
+
+export async function sendPaymentReminderAction(invoiceId: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const [{ data: invoice }, { data: tenant }] = await Promise.all([
+    supabase.from('invoices').select('*, client:clients(*), line_items:invoice_line_items(*)').eq('id', invoiceId).eq('tenant_id', user.id).single(),
+    supabase.from('tenants').select('*').eq('id', user.id).single(),
+  ])
+
+  if (!invoice || !invoice.client) return { error: 'Invoice or client not found' }
+  if (!tenant) return { error: 'Tenant not found' }
+
+  const tenantWithSlug = tenant as Tenant & { portal_slug?: string }
+  const payUrl = tenantWithSlug.portal_slug
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/portal/${tenantWithSlug.portal_slug}/invoice/${invoice.id}`
+    : undefined
+
+  try {
+    await sendInvoiceEmail({
+      invoice: invoice as Invoice & { line_items: InvoiceLineItem[] },
+      tenant: tenantWithSlug,
+      client: invoice.client as Client,
+      payUrl,
+    })
+    return { success: true }
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Failed to send reminder' }
+  }
+}
+
+// ─── EXPENSES ─────────────────────────────────────────────────────────────────
+
+export interface CreateExpenseData {
+  description: string
+  amount_cents: number
+  currency: Currency
+  category: string
+  date: string
+  notes?: string
+}
+
+export async function createExpenseAction(data: CreateExpenseData): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { data: expense, error } = await supabase
+    .from('expenses')
+    .insert({ tenant_id: user.id, ...data, notes: data.notes ?? null })
+    .select('id')
+    .single()
+
+  if (error) return { error: error.message }
+  revalidatePath('/expenses')
+  return { success: true, id: expense.id }
+}
+
+export async function updateExpenseAction(id: string, data: Partial<CreateExpenseData>): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase.from('expenses').update({ ...data, updated_at: new Date().toISOString() }).eq('id', id).eq('tenant_id', user.id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/expenses')
+  revalidatePath(`/expenses/${id}`)
+  return { success: true }
+}
+
+export async function deleteExpenseAction(id: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase.from('expenses').delete().eq('id', id).eq('tenant_id', user.id)
+  if (error) return { error: error.message }
+  revalidatePath('/expenses')
+  return { success: true }
 }

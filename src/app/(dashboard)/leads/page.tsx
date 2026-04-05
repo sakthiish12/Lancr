@@ -3,11 +3,26 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, Target } from 'lucide-react'
 import LeadsTable from './LeadsTable'
+import { isPro } from '@/lib/plan'
+import { ProGate } from '@/components/ProGate'
+import { Header } from '@/components/layout/Header'
 
 export default async function LeadsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const { data: tenant } = await supabase.from('tenants').select('plan').eq('id', user.id).single()
+  if (!isPro(tenant?.plan)) {
+    return (
+      <div>
+        <Header title="Leads" />
+        <div className="p-6">
+          <ProGate feature="Leads Pipeline" description="Track prospects from first contact to won deal. Never let a lead fall through the cracks." />
+        </div>
+      </div>
+    )
+  }
 
   const { data: leads } = await supabase
     .from('leads')

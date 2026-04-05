@@ -40,6 +40,7 @@ export function InvoiceForm({ clients }: InvoiceFormProps) {
   const [currency, setCurrency] = useState<Currency>('SGD')
   const [dueDate, setDueDate] = useState('')
   const [notes, setNotes] = useState('')
+  const [recurringInterval, setRecurringInterval] = useState('')
   const [lineItems, setLineItems] = useState<LineItem[]>([emptyItem()])
 
   const clientOptions = clients.map((c) => ({
@@ -90,6 +91,7 @@ export function InvoiceForm({ clients }: InvoiceFormProps) {
         due_date: dueDate || undefined,
         notes: notes || undefined,
         line_items: items,
+        recurring_interval: recurringInterval || undefined,
       })
 
       if ('error' in result) {
@@ -145,6 +147,25 @@ export function InvoiceForm({ clients }: InvoiceFormProps) {
               onChange={(e) => setDueDate(e.target.value)}
             />
           </div>
+        </div>
+
+        {/* Recurring */}
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-gray-900">Recurring invoice</p>
+            <p className="text-xs text-gray-500 mt-0.5">Auto-generate the next invoice on schedule</p>
+          </div>
+          <select
+            value={recurringInterval}
+            onChange={(e) => setRecurringInterval(e.target.value)}
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-violet-500 focus:outline-none"
+          >
+            <option value="">One-time</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="yearly">Yearly</option>
+          </select>
         </div>
 
         {/* Line Items */}

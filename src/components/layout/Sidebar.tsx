@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, FileText, FileSignature, Receipt,
-  Users, Settings, Zap, X, ChevronRight, Target
+  Users, Settings, Zap, X, ChevronRight, Target, BarChart2, CreditCard
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useUIStore } from '@/stores/ui'
@@ -16,6 +16,8 @@ const NAV_ITEMS = [
   { href: '/invoices', label: 'Invoices', icon: Receipt },
   { href: '/clients', label: 'Clients', icon: Users },
   { href: '/leads', label: 'Leads', icon: Target },
+  { href: '/expenses', label: 'Expenses', icon: CreditCard },
+  { href: '/reports', label: 'Reports', icon: BarChart2 },
   { href: '/settings', label: 'Settings', icon: Settings },
 ]
 
@@ -94,13 +96,13 @@ export function Sidebar() {
 
         {/* Upgrade CTA */}
         <div className="border-t border-gray-200 p-4">
-          <div className="rounded-lg bg-violet-50 p-3">
+          <Link href="/upgrade" className="block rounded-lg bg-violet-50 p-3 hover:bg-violet-100 transition-colors">
             <p className="text-xs font-semibold text-violet-900">Lancr Pro</p>
-            <p className="mt-0.5 text-xs text-violet-600">Unlock unlimited clients & invoices</p>
-            <button className="mt-2 w-full rounded-md bg-violet-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-violet-700">
-              Upgrade
-            </button>
-          </div>
+            <p className="mt-0.5 text-xs text-violet-600">Reports, expenses, leads & more</p>
+            <div className="mt-2 w-full rounded-md bg-violet-600 px-3 py-1.5 text-center text-xs font-medium text-white hover:bg-violet-700">
+              Upgrade — S$5/mo
+            </div>
+          </Link>
         </div>
       </aside>
     </>

@@ -3,11 +3,11 @@
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Send, CheckCircle, Download, Mail } from 'lucide-react'
+import { ArrowLeft, Send, CheckCircle, Download, Mail, Bell, RefreshCw } from 'lucide-react'
 import { Button, Badge } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils/currency'
 import { formatDate, formatDateTime } from '@/lib/utils/date'
-import { updateInvoiceStatusAction, sendInvoiceEmailAction } from '../../actions'
+import { updateInvoiceStatusAction, sendInvoiceEmailAction, sendPaymentReminderAction } from '../../actions'
 import { INVOICE_STATUSES } from '@/lib/constants'
 import type { Invoice, InvoiceLineItem } from '@/types'
 
@@ -30,6 +30,18 @@ export function InvoiceDetail({ invoice }: Props) {
       } else {
         alert('Invoice emailed to ' + (invoice.client?.email ?? 'client') + ' ✓')
         router.refresh()
+      }
+    })
+  }
+
+  function sendReminder() {
+    if (!confirm(`Send a payment reminder to ${invoice.client?.email ?? 'client'}?`)) return
+    startTransition(async () => {
+      const result = await sendPaymentReminderAction(invoice.id)
+      if ('error' in result) {
+        alert(result.error)
+      } else {
+        alert('Reminder sent ✓')
       }
     })
   }
@@ -82,10 +94,22 @@ export function InvoiceDetail({ invoice }: Props) {
             </Button>
           )}
           {(invoice.status === 'sent' || invoice.status === 'viewed' || invoice.status === 'overdue') && (
-            <Button size="sm" onClick={() => markAs('paid')} loading={isPending}>
-              <CheckCircle className="h-4 w-4" />
-              Mark as Paid
-            </Button>
+            <>
+              <Button variant="outline" size="sm" onClick={sendReminder} loading={isPending}>
+                <Bell className="h-4 w-4" />
+                Send Reminder
+              </Button>
+              <Button size="sm" onClick={() => markAs('paid')} loading={isPending}>
+                <CheckCircle className="h-4 w-4" />
+                Mark as Paid
+              </Button>
+            </>
+          )}
+          {invoice.recurring_interval && (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-100 px-2.5 py-1 text-xs font-medium text-violet-700">
+              <RefreshCw className="h-3 w-3" />
+              {invoice.recurring_interval}
+            </span>
           )}
         </div>
       </div>
