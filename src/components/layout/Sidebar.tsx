@@ -48,7 +48,7 @@ export function Sidebar() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600">
               <Zap className="h-4 w-4 text-white" />
             </div>
-            <span className="text-lg font-bold text-gray-900">Lancr</span>
+            <span className="text-lg font-bold text-gray-900">WorkInvoice</span>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
@@ -97,7 +97,7 @@ export function Sidebar() {
         {/* Upgrade CTAs */}
         <div className="border-t border-gray-200 p-4 space-y-2">
           <Link href="/upgrade" className="block rounded-lg bg-violet-50 p-3 hover:bg-violet-100 transition-colors">
-            <p className="text-xs font-semibold text-violet-900">Lancr Pro</p>
+            <p className="text-xs font-semibold text-violet-900">WorkInvoice Pro</p>
             <p className="mt-0.5 text-xs text-violet-600">Reports, expenses, leads & more</p>
             <div className="mt-2 w-full rounded-md bg-violet-600 px-3 py-1.5 text-center text-xs font-medium text-white">
               Upgrade — S$5/mo

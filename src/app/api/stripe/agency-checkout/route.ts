@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
         price_data: {
           currency: 'sgd',
           product_data: {
-            name: 'Lancr Agency',
+            name: 'WorkInvoice Agency',
             description: 'Up to 10 freelancer seats · Admin dashboard · White-label portal',
           },
           unit_amount: 4900, // S$49/month

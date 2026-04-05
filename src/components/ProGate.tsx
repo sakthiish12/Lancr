@@ -14,7 +14,7 @@ export function ProGate({ feature, description }: Props) {
       </div>
       <h2 className="text-xl font-bold text-gray-900 mb-2">{feature} is a Pro feature</h2>
       <p className="text-sm text-gray-500 max-w-sm mb-6">
-        {description ?? `Upgrade to Lancr Pro to unlock ${feature} and more — just S$5/month.`}
+        {description ?? `Upgrade to WorkInvoice Pro to unlock ${feature} and more — just S$5/month.`}
       </p>
       <Link
         href="/upgrade"

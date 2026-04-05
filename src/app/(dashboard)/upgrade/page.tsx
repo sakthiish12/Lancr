@@ -17,7 +17,7 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
 
   return (
     <div>
-      <Header title="Upgrade to Pro" />
+      <Header title="Plans & Pricing" />
       <div className="p-6 max-w-3xl space-y-8">
 
         {stripeError && (
@@ -39,7 +39,7 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
             <div className="flex items-center gap-3">
               <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0" />
               <div>
-                <p className="font-semibold text-green-800">You&apos;re on Lancr Pro</p>
+                <p className="font-semibold text-green-800">You&apos;re on WorkInvoice Pro</p>
                 <p className="text-sm text-green-600 mt-0.5">All features are unlocked. Thank you for your support!</p>
               </div>
             </div>
@@ -48,7 +48,7 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
 
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Plans &amp; Pricing</h1>
-          <p className="mt-2 text-gray-500">From solo freelancer to full agency — Lancr scales with you.</p>
+          <p className="mt-2 text-gray-500">From solo freelancer to full agency — WorkInvoice scales with you.</p>
         </div>
 
         {/* Pricing cards */}

@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
         price_data: {
           currency: 'sgd',
           product_data: {
-            name: 'Lancr Pro',
+            name: 'WorkInvoice Pro',
             description: 'Unlimited clients, invoices, reports, expenses, leads & more',
           },
           unit_amount: 500, // S$5.00

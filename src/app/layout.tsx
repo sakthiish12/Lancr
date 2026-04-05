@@ -5,8 +5,8 @@ import './globals.css'
 const geist = Geist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Lancr — Freelance Business Platform for Southeast Asia',
-  description: 'Quotes, contracts, invoices, and payments for freelancers and micro-agencies in Southeast Asia. GST-compliant and InvoiceNow ready.',
+  title: 'WorkInvoice — Freelance Business Platform for Southeast Asia',
+  description: 'Quotes, contracts, invoices, and payments for freelancers and micro-agencies in Southeast Asia. GST-compliant and PayNow-ready.',
 }
 
 export default function RootLayout({

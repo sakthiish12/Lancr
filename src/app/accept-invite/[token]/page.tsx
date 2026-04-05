@@ -29,7 +29,7 @@ export default async function AcceptInvitePage({ params }: { params: Promise<{ t
           <h1 className="text-xl font-bold text-gray-900">Invalid invite link</h1>
           <p className="text-sm text-gray-500 mt-2">This invite has expired or doesn&apos;t exist.</p>
           <Link href="/login" className="mt-6 inline-block text-violet-600 hover:underline text-sm">
-            Go to Lancr →
+            Go to WorkInvoice →
           </Link>
         </div>
       </div>
@@ -68,14 +68,14 @@ export default async function AcceptInvitePage({ params }: { params: Promise<{ t
             </div>
             <h1 className="text-2xl font-bold text-gray-900">You&apos;re invited!</h1>
             <p className="text-gray-500 mt-2">
-              Join <strong>{org?.name}</strong> on Lancr as a {invite.role}
+              Join <strong>{org?.name}</strong> on WorkInvoice as a {invite.role}
             </p>
           </div>
 
           <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm text-center">
             <LogIn className="h-8 w-8 text-violet-500 mx-auto mb-4" />
             <p className="text-sm text-gray-600 mb-6">
-              Sign in or create a Lancr account to accept this invitation.
+              Sign in or create a WorkInvoice account to accept this invitation.
             </p>
             <Link
               href={`/login?redirect=/accept-invite/${token}`}
@@ -84,7 +84,7 @@ export default async function AcceptInvitePage({ params }: { params: Promise<{ t
               Sign in to accept →
             </Link>
             <p className="mt-3 text-xs text-gray-400">
-              New to Lancr?{' '}
+              New to WorkInvoice?{' '}
               <Link href={`/signup?redirect=/accept-invite/${token}`} className="text-violet-600 hover:underline">
                 Create a free account
               </Link>

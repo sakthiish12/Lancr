@@ -57,7 +57,7 @@ const proFeatureCards = [
   {
     icon: RefreshCw,
     title: 'Recurring Invoices',
-    desc: 'Set monthly retainers once. Lancr auto-generates the next invoice on schedule.',
+    desc: 'Set monthly retainers once. WorkInvoice auto-generates the next invoice on schedule.',
     color: 'bg-orange-100 text-orange-600',
   },
   {
@@ -96,19 +96,19 @@ function BrowserMockup({ children, url }: { children: React.ReactNode; url: stri
 // Fake dashboard screenshot
 function DashboardMockup() {
   return (
-    <BrowserMockup url="app.lancr.io/dashboard">
+    <BrowserMockup url="app.workinvoice.app/dashboard">
       <div className="flex h-80">
         {/* Sidebar */}
         <div className="w-48 border-r border-gray-100 bg-gray-50 p-3 flex flex-col gap-1 flex-shrink-0">
           <div className="flex items-center gap-1.5 mb-3 px-2 pt-1">
             <div className="h-5 w-5 rounded bg-violet-600 flex items-center justify-center"><Zap className="h-3 w-3 text-white" /></div>
-            <span className="text-xs font-bold text-gray-900">Lancr</span>
+            <span className="text-xs font-bold text-gray-900">WorkInvoice</span>
           </div>
           {['Dashboard', 'Quotes', 'Contracts', 'Invoices', 'Clients', 'Leads', 'Expenses', 'Reports'].map((item, i) => (
             <div key={item} className={`rounded-md px-2 py-1.5 text-xs font-medium ${i === 0 ? 'bg-violet-100 text-violet-700' : 'text-gray-500'}`}>{item}</div>
           ))}
           <div className="mt-auto rounded-lg bg-violet-50 p-2">
-            <p className="text-[10px] font-bold text-violet-800">Lancr Pro</p>
+            <p className="text-[10px] font-bold text-violet-800">WorkInvoice Pro</p>
             <p className="text-[10px] text-violet-600 mt-0.5">S$5/month</p>
           </div>
         </div>
@@ -154,7 +154,7 @@ function ReportsMockup() {
   const bars = [30, 55, 40, 80, 65, 90, 45, 70, 85, 60, 95, 100]
   const exps = [15, 20, 18, 25, 30, 22, 19, 28, 35, 24, 40, 38]
   return (
-    <BrowserMockup url="app.lancr.io/reports">
+    <BrowserMockup url="app.workinvoice.app/reports">
       <div className="p-4">
         <p className="text-xs font-semibold text-gray-900 mb-3">Reports — 2026</p>
         <div className="grid grid-cols-4 gap-2 mb-4">
@@ -204,7 +204,7 @@ function ReportsMockup() {
 // Fake invoice+portal screenshot
 function InvoiceMockup() {
   return (
-    <BrowserMockup url="lancr-indol.vercel.app/portal/yourslug/invoice/inv-001">
+    <BrowserMockup url="workinvoice.app/portal/yourslug/invoice/inv-001">
       <div className="p-5 max-w-sm mx-auto">
         <div className="flex items-center gap-2 mb-4">
           <div className="h-6 w-6 rounded bg-violet-600 flex items-center justify-center"><Zap className="h-3 w-3 text-white" /></div>
@@ -244,7 +244,7 @@ export default function LandingPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600">
               <Zap className="h-4 w-4 text-white" />
             </div>
-            <span className="text-lg font-bold text-gray-900">Lancr</span>
+            <span className="text-lg font-bold text-gray-900">WorkInvoice</span>
           </div>
           <div className="hidden sm:flex items-center gap-6 text-sm text-gray-500">
             <a href="#features" className="hover:text-gray-900 transition-colors">Features</a>
@@ -334,7 +334,7 @@ export default function LandingPage() {
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-2 rounded-full bg-violet-50 px-3 py-1.5 text-xs font-medium text-violet-700 mb-4">
               <Zap className="h-3 w-3" />
-              Lancr Pro — S$5/month
+              WorkInvoice Pro — S$5/month
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-3">Everything to run a real freelance business</h2>
             <p className="text-gray-500 max-w-xl mx-auto">
@@ -469,7 +469,7 @@ export default function LandingPage() {
       <section className="bg-violet-600 px-6 py-20 text-center">
         <h2 className="text-3xl font-bold text-white mb-3">Ready to get paid faster?</h2>
         <p className="text-violet-200 mb-8 max-w-md mx-auto">
-          Join freelancers across Singapore, Malaysia, and Indonesia using Lancr to run their business.
+          Join freelancers across Singapore, Malaysia, and Indonesia using WorkInvoice to run their business.
         </p>
         <Link href="/signup" className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 font-semibold text-violet-700 hover:bg-violet-50 transition-colors">
           Start for free
@@ -484,7 +484,7 @@ export default function LandingPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded bg-violet-600">
               <Zap className="h-3 w-3 text-white" />
             </div>
-            <span className="text-sm font-semibold text-gray-900">Lancr</span>
+            <span className="text-sm font-semibold text-gray-900">WorkInvoice</span>
           </div>
           <div className="flex items-center gap-6 text-xs text-gray-400">
             <span>Built for Singapore & Southeast Asia</span>

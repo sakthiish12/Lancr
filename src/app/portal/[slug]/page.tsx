@@ -112,7 +112,7 @@ export default async function PortalPage({ params }: Props) {
         )}
 
         <p className="mt-10 text-center text-xs text-gray-400">
-          Powered by <span className="font-semibold text-violet-500">Lancr</span> · Secure payments via Stripe
+          Powered by <span className="font-semibold text-violet-500">WorkInvoice</span> · Secure payments via Stripe
         </p>
       </main>
     </div>

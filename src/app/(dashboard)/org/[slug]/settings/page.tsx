@@ -11,7 +11,7 @@ function svc() {
   )
 }
 
-const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://lancr-indol.vercel.app').trim()
+const APP_URL = (process.env.NEXT_PUBLIC_APP_URL ?? 'https://workinvoice.app').trim()
 
 export default async function OrgSettingsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -73,7 +73,7 @@ export default async function OrgSettingsPage({ params }: { params: Promise<{ sl
         <div className="border-t border-gray-100 pt-3">
           <p className="text-xs text-gray-500">
             Need more seats or a custom domain?{' '}
-            <Link href="mailto:hello@lancr.app" className="text-violet-600 hover:underline">
+            <Link href="mailto:hello@workinvoice.app" className="text-violet-600 hover:underline">
               Contact us for Enterprise pricing →
             </Link>
           </p>

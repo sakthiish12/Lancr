@@ -199,7 +199,7 @@ export default async function InvoicePayPage({ params, searchParams }: Props) {
         )}
 
         <p className="text-center text-xs text-gray-400 pb-6">
-          Powered by <span className="font-semibold text-violet-500">Lancr</span> · Secure payments via Stripe
+          Powered by <span className="font-semibold text-violet-500">WorkInvoice</span> · Secure payments via Stripe
         </p>
       </main>
     </div>

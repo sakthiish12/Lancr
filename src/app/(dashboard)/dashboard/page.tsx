@@ -112,7 +112,7 @@ export default async function DashboardPage() {
     <div>
       <Header title="Dashboard" />
       <div className="p-6 space-y-6">
-        <PageHeader title="Welcome to Lancr" description="Your freelance business command center" />
+        <PageHeader title="Welcome to WorkInvoice" description="Your freelance business command center" />
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

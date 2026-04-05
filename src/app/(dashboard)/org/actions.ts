@@ -97,12 +97,12 @@ export async function inviteMemberAction(orgId: string, email: string) {
   // Send invite email
   const inviteUrl = `${APP_URL}/accept-invite/${token}`
   await resend.emails.send({
-    from: 'Lancr <noreply@lancr.app>',
+    from: 'WorkInvoice <noreply@workinvoice.app>',
     to: email,
-    subject: `You're invited to join ${org?.name ?? 'a team'} on Lancr`,
+    subject: `You're invited to join ${org?.name ?? 'a team'} on WorkInvoice`,
     html: `
       <div style="font-family:sans-serif;max-width:480px;margin:0 auto;">
-        <h2>You've been invited to ${org?.name ?? 'a team'} on Lancr</h2>
+        <h2>You've been invited to ${org?.name ?? 'a team'} on WorkInvoice</h2>
         <p>You've been invited to join as a freelancer member. Click the button below to accept.</p>
         <a href="${inviteUrl}" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0;">
           Accept Invitation →

@@ -80,7 +80,7 @@ export default function NewOrgPage() {
             </label>
             <div className="flex items-center rounded-lg border border-gray-300 focus-within:border-violet-500 focus-within:ring-2 focus-within:ring-violet-500/20 overflow-hidden">
               <span className="pl-3 pr-1 py-2.5 text-sm text-gray-400 bg-gray-50 border-r border-gray-200 shrink-0">
-                lancr.app/org/
+                workinvoice.app/org/
               </span>
               <input
                 type="text"

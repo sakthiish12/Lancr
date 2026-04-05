@@ -5,7 +5,7 @@ import type { Invoice, Quote, Tenant, Client } from '@/types'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM = 'Lancr <invoices@lancr.app>'
+const FROM = 'WorkInvoice <invoices@workinvoice.app>'
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL?.trim() ?? ''
 
 // ─── Invoice email ─────────────────────────────────────────────────────────
@@ -88,7 +88,7 @@ export async function sendInvoiceEmail({
     <!-- Footer -->
     <div style="background:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb">
       <p style="color:#9ca3af;font-size:12px;margin:0;text-align:center">
-        Sent by ${tenant.business_name ?? tenant.name} via Lancr
+        Sent by ${tenant.business_name ?? tenant.name} via WorkInvoice
         ${tenant.gst_registered && tenant.gst_number ? `· GST Reg No: ${tenant.gst_number}` : ''}
       </p>
     </div>
@@ -179,7 +179,7 @@ export async function sendQuoteEmail({
     <!-- Footer -->
     <div style="background:#f9fafb;padding:20px 40px;border-top:1px solid #e5e7eb">
       <p style="color:#9ca3af;font-size:12px;margin:0;text-align:center">
-        Sent by ${tenant.business_name ?? tenant.name} via Lancr
+        Sent by ${tenant.business_name ?? tenant.name} via WorkInvoice
       </p>
     </div>
   </div>
