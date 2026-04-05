@@ -47,6 +47,9 @@ export default function OnboardingPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { setError('Session expired. Please sign in again.'); return }
 
+      const slugBase = (form.business_name || form.name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+      const portal_slug = `${slugBase}-${user.id.slice(0, 6)}`
+
       const { error: insertError } = await supabase.from('tenants').insert({
         id: user.id,
         name: form.name,
@@ -56,6 +59,7 @@ export default function OnboardingPage() {
         gst_registered: form.gst_registered,
         gst_number: form.gst_registered ? form.gst_number || null : null,
         address: form.address || null,
+        portal_slug,
       })
 
       if (insertError) { setError(insertError.message); return }
