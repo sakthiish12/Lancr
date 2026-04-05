@@ -16,7 +16,7 @@ export function InviteForm({ orgId, orgSlug }: { orgId: string; orgSlug: string 
     startTransition(async () => {
       const res = await inviteMemberAction(orgId, email.trim())
       if ('error' in res) {
-        setMsg({ type: 'error', text: res.error })
+        setMsg({ type: 'error', text: res.error ?? 'Something went wrong' })
       } else {
         setMsg({ type: 'success', text: `Invite sent to ${email}` })
         setEmail('')
