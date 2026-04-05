@@ -94,13 +94,20 @@ export function Sidebar() {
           </ul>
         </nav>
 
-        {/* Upgrade CTA */}
-        <div className="border-t border-gray-200 p-4">
+        {/* Upgrade CTAs */}
+        <div className="border-t border-gray-200 p-4 space-y-2">
           <Link href="/upgrade" className="block rounded-lg bg-violet-50 p-3 hover:bg-violet-100 transition-colors">
             <p className="text-xs font-semibold text-violet-900">Lancr Pro</p>
             <p className="mt-0.5 text-xs text-violet-600">Reports, expenses, leads & more</p>
-            <div className="mt-2 w-full rounded-md bg-violet-600 px-3 py-1.5 text-center text-xs font-medium text-white hover:bg-violet-700">
+            <div className="mt-2 w-full rounded-md bg-violet-600 px-3 py-1.5 text-center text-xs font-medium text-white">
               Upgrade — S$5/mo
+            </div>
+          </Link>
+          <Link href="/org/new" className="block rounded-lg bg-gray-50 p-3 hover:bg-gray-100 transition-colors border border-gray-200">
+            <p className="text-xs font-semibold text-gray-800">🏢 Agency Plan</p>
+            <p className="mt-0.5 text-xs text-gray-500">Team dashboard & white-label portal</p>
+            <div className="mt-2 w-full rounded-md bg-gray-800 px-3 py-1.5 text-center text-xs font-medium text-white">
+              Start agency — S$49/mo
             </div>
           </Link>
         </div>

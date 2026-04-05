@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Zap, ArrowRight, CheckCircle, X, BarChart2, Receipt, Target, RefreshCw, Bell, Users } from 'lucide-react'
+import { Zap, ArrowRight, CheckCircle, X, BarChart2, Receipt, Target, RefreshCw, Bell, Users, Building2 } from 'lucide-react'
 
 const FREE_FEATURES = [
   'Up to 3 clients',
@@ -370,7 +370,7 @@ export default function LandingPage() {
             <p className="text-gray-500">Start free. Upgrade when you grow.</p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-3">
             {/* Free */}
             <div className="rounded-2xl border border-gray-200 bg-white p-8">
               <div className="mb-6">
@@ -425,6 +425,41 @@ export default function LandingPage() {
                 ))}
               </ul>
               <p className="mt-6 text-center text-xs text-gray-400">No credit card required · Cancel anytime</p>
+            </div>
+
+            {/* Agency */}
+            <div className="rounded-2xl border-2 border-gray-800 bg-gray-900 p-8 relative">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                <span className="rounded-full bg-gray-800 px-3 py-1 text-xs font-bold text-white">FOR AGENCIES</span>
+              </div>
+              <div className="mb-6">
+                <p className="text-sm font-semibold uppercase tracking-wide text-gray-300 mb-2">Agency</p>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold text-white">S$49</span>
+                  <span className="text-sm text-gray-400">/ month</span>
+                </div>
+                <p className="mt-2 text-sm text-gray-400">For studios &amp; small agencies</p>
+              </div>
+              <Link href="/signup?plan=agency" className="flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-center text-sm font-semibold text-gray-900 hover:bg-gray-100 transition-colors mb-8">
+                <Building2 className="h-4 w-4" />
+                Start your agency
+              </Link>
+              <ul className="space-y-3">
+                {[
+                  'Everything in Pro',
+                  'Up to 10 freelancer seats',
+                  'Unified admin dashboard',
+                  'Revenue across all members',
+                  'White-label client portal URL',
+                  'Invite & manage team members',
+                ].map(f => (
+                  <li key={f} className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 flex-shrink-0 text-gray-300" />
+                    <span className="text-sm text-gray-200">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 text-center text-xs text-gray-500">Cancel anytime · Stripe checkout</p>
             </div>
           </div>
         </div>

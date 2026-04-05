@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Header } from '@/components/layout/Header'
-import { CheckCircle, X, Zap } from 'lucide-react'
+import { CheckCircle, X, Zap, Building2 } from 'lucide-react'
 import { FREE_FEATURES, PRO_FEATURES, FREE_CLIENT_LIMIT, FREE_INVOICE_LIMIT } from '@/lib/plan'
 
 export default async function UpgradePage(props: { searchParams?: Promise<{ error?: string; upgraded?: string }> }) {
@@ -47,12 +47,12 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
         )}
 
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">Upgrade to Lancr Pro</h1>
-          <p className="mt-2 text-gray-500">Everything you need to run a real freelance business.</p>
+          <h1 className="text-3xl font-bold text-gray-900">Plans &amp; Pricing</h1>
+          <p className="mt-2 text-gray-500">From solo freelancer to full agency — Lancr scales with you.</p>
         </div>
 
         {/* Pricing cards */}
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-3">
           {/* Free */}
           <div className="rounded-2xl border border-gray-200 bg-white p-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Free</p>
@@ -123,6 +123,48 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
 
             <p className="mt-3 text-center text-xs text-gray-400">Cancel anytime. No contracts.</p>
           </div>
+
+          {/* Agency */}
+          <div className="rounded-2xl border-2 border-gray-800 bg-gray-900 p-8 relative">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+              <span className="rounded-full bg-gray-800 px-3 py-1 text-xs font-bold text-white">FOR AGENCIES</span>
+            </div>
+
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-300 mb-2">Agency</p>
+            <div className="flex items-baseline gap-1 mb-1">
+              <span className="text-4xl font-bold text-white">S$49</span>
+              <span className="text-sm text-gray-400">/ month</span>
+            </div>
+            <p className="text-sm text-gray-400 mb-6">For freelance studios &amp; small agencies</p>
+
+            <ul className="space-y-2.5 mb-8">
+              {[
+                'Everything in Pro',
+                'Up to 10 freelancer seats',
+                'Unified admin dashboard',
+                'Revenue across all team members',
+                'White-label client portal',
+                'Invite members by email',
+                'Team member management',
+                'Agency branding & slug',
+              ].map(f => (
+                <li key={f} className="flex items-center gap-2.5">
+                  <CheckCircle className="h-4 w-4 text-gray-300 flex-shrink-0" />
+                  <span className="text-sm text-gray-200">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="/org/new"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-white py-3 text-sm font-semibold text-gray-900 hover:bg-gray-100 transition-colors"
+            >
+              <Building2 className="h-4 w-4" />
+              Create your agency
+            </a>
+
+            <p className="mt-3 text-center text-xs text-gray-500">Includes Stripe checkout · Cancel anytime</p>
+          </div>
         </div>
 
         {/* Feature breakdown */}
@@ -133,27 +175,33 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">Feature</th>
                 <th className="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wide">Free</th>
                 <th className="px-6 py-3 text-center text-xs font-semibold text-violet-600 uppercase tracking-wide">Pro</th>
+                <th className="px-6 py-3 text-center text-xs font-semibold text-gray-800 uppercase tracking-wide">Agency</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {[
-                ['Clients', `Up to ${FREE_CLIENT_LIMIT}`, 'Unlimited'],
-                ['Invoices per month', `Up to ${FREE_INVOICE_LIMIT}`, 'Unlimited'],
-                ['Quotes & contracts', '✓', '✓'],
-                ['E-signatures', '✓', '✓'],
-                ['PayNow & Stripe payments', '✓', '✓'],
-                ['Client payment portal', '✓', '✓'],
-                ['PDF exports', '✓', '✓'],
-                ['Reports & P&L dashboard', '—', '✓'],
-                ['Expense tracking', '—', '✓'],
-                ['Leads pipeline (CRM)', '—', '✓'],
-                ['Recurring invoices', '—', '✓'],
-                ['Payment reminders', '—', '✓'],
-              ].map(([feature, free, pro]) => (
+                ['Clients', `Up to ${FREE_CLIENT_LIMIT}`, 'Unlimited', 'Unlimited'],
+                ['Invoices per month', `Up to ${FREE_INVOICE_LIMIT}`, 'Unlimited', 'Unlimited'],
+                ['Quotes & contracts', '✓', '✓', '✓'],
+                ['E-signatures', '✓', '✓', '✓'],
+                ['PayNow & Stripe payments', '✓', '✓', '✓'],
+                ['Client payment portal', '✓', '✓', '✓'],
+                ['PDF exports', '✓', '✓', '✓'],
+                ['Reports & P&L dashboard', '—', '✓', '✓'],
+                ['Expense tracking', '—', '✓', '✓'],
+                ['Leads pipeline (CRM)', '—', '✓', '✓'],
+                ['Recurring invoices', '—', '✓', '✓'],
+                ['Payment reminders', '—', '✓', '✓'],
+                ['Team seats', '—', '—', 'Up to 10'],
+                ['Admin dashboard (all members)', '—', '—', '✓'],
+                ['White-label portal URL', '—', '—', '✓'],
+                ['Member invite & management', '—', '—', '✓'],
+              ].map(([feature, free, pro, agency]) => (
                 <tr key={feature}>
                   <td className="px-6 py-3 text-sm text-gray-700">{feature}</td>
                   <td className="px-6 py-3 text-center text-sm text-gray-400">{free}</td>
                   <td className="px-6 py-3 text-center text-sm font-medium text-violet-700">{pro}</td>
+                  <td className="px-6 py-3 text-center text-sm font-medium text-gray-800">{agency}</td>
                 </tr>
               ))}
             </tbody>

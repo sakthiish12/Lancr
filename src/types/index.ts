@@ -131,6 +131,37 @@ export interface Expense {
   updated_at: string
 }
 
+export interface Organization {
+  id: string
+  name: string
+  slug: string
+  plan: 'agency' | 'enterprise'
+  seats_limit: number
+  branding: {
+    logo_url?: string
+    primary_color?: string
+    tagline?: string
+  }
+  custom_domain: string | null
+  stripe_customer_id: string | null
+  stripe_subscription_id: string | null
+  created_at: string
+}
+
+export interface OrgMembership {
+  id: string
+  org_id: string
+  tenant_id: string | null
+  role: 'admin' | 'member'
+  status: 'pending' | 'active'
+  invite_token: string | null
+  invite_email: string | null
+  invited_at: string
+  joined_at: string | null
+  tenant?: Tenant
+  organization?: Organization
+}
+
 export interface Payment {
   id: string
   tenant_id: string

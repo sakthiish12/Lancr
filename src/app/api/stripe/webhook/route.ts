@@ -73,6 +73,38 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Agency subscription activated
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object as Stripe.Checkout.Session
+      if (session.metadata?.type === 'agency_subscription') {
+        const subscriptionId = typeof session.subscription === 'string'
+          ? session.subscription
+          : session.subscription?.id ?? null
+
+        // If an existing org was upgraded, stamp the subscription ID
+        if (session.metadata?.org_id && subscriptionId) {
+          await supabase.from('organizations')
+            .update({ stripe_subscription_id: subscriptionId, plan: 'agency' })
+            .eq('id', session.metadata.org_id)
+        }
+
+        // Also mark the tenant as pro (agency includes pro features)
+        if (session.metadata?.tenant_id) {
+          await supabase.from('tenants').update({ plan: 'pro' }).eq('id', session.metadata.tenant_id)
+        }
+      }
+    }
+
+    // Agency subscription cancelled / lapsed — downgrade org plan
+    if (event.type === 'customer.subscription.deleted') {
+      const sub = event.data.object as Stripe.Subscription
+      if (sub.metadata?.org_id) {
+        await supabase.from('organizations')
+          .update({ stripe_subscription_id: null, plan: 'free' })
+          .eq('id', sub.metadata.org_id)
+      }
+    }
+
     // Pro subscription cancelled / lapsed
     if (event.type === 'customer.subscription.deleted') {
       const sub = event.data.object as Stripe.Subscription
