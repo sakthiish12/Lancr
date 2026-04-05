@@ -97,7 +97,7 @@ export default async function MembersPage({ params }: { params: Promise<{ slug: 
                 status={m.status}
                 inviteEmail={m.invite_email}
                 joinedAt={m.joined_at}
-                tenant={m.tenant as { id: string; name: string; email: string } | null}
+                tenant={m.tenant as unknown as { id: string; name: string; email: string } | null}
                 isAdmin={isAdmin}
                 currentUserId={user.id}
               />
