@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe((process.env.STRIPE_SECRET_KEY ?? '').trim(), {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   apiVersion: '2026-03-25.dahlia' as any,
 })
@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const sessionId = searchParams.get('session_id')
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL!
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? '').trim()
 
   if (!sessionId) return NextResponse.redirect(new URL('/upgrade', request.url))
 

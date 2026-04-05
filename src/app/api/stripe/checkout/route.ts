@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe((process.env.STRIPE_SECRET_KEY ?? '').trim(), {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   apiVersion: '2026-03-25.dahlia' as any,
 })
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     const tenant = invoice.tenant as { business_name: string | null; name: string; portal_slug: string }
     const client = invoice.client as { email: string; name: string } | null
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL!
+    const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? '').trim()
     const portalSlug = tenant.portal_slug
 
     const session = await stripe.checkout.sessions.create({

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@/lib/supabase/server'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe((process.env.STRIPE_SECRET_KEY ?? '').trim(), {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   apiVersion: '2026-03-25.dahlia' as any,
 })
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   const { data: tenant } = await supabase.from('tenants').select('email, plan').eq('id', user.id).single()
   if (tenant?.plan === 'pro') return NextResponse.redirect(new URL('/upgrade', request.url))
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL!
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? '').trim()
 
   try {
     const session = await stripe.checkout.sessions.create({
