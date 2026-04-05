@@ -11,7 +11,7 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
 
   const { data: tenant } = await supabase.from('tenants').select('plan').eq('id', user.id).single()
   const isPro = tenant?.plan === 'pro'
-  const searchParams = await (props.searchParams ?? Promise.resolve({}))
+  const searchParams = await (props.searchParams ?? Promise.resolve({})) as { error?: string; upgraded?: string }
   const stripeError = searchParams?.error
   const justUpgraded = searchParams?.upgraded === 'true'
 
