@@ -38,7 +38,7 @@ export default async function OrgDashboardPage({ params }: { params: Promise<{ s
     .order('joined_at', { ascending: false })
 
   const memberTenantIds = (members ?? [])
-    .map(m => (m.tenant as { id: string } | null)?.id)
+    .map(m => (m.tenant as unknown as { id: string } | null)?.id)
     .filter(Boolean) as string[]
 
   // Aggregate stats across all members
@@ -71,8 +71,8 @@ export default async function OrgDashboardPage({ params }: { params: Promise<{ s
       total_cents: inv.total_cents,
       currency: inv.currency,
       created_at: inv.created_at,
-      client_name: (inv.client as { name: string } | null)?.name ?? '—',
-      member_name: (inv.tenant as { name: string } | null)?.name ?? '—',
+      client_name: ( inv.client as unknown as { name: string } | null)?.name ?? '—',
+      member_name: ( inv.tenant as unknown as { name: string } | null)?.name ?? '—',
     }))
   }
 
@@ -167,7 +167,7 @@ export default async function OrgDashboardPage({ params }: { params: Promise<{ s
           </div>
           <div className="divide-y divide-gray-50">
             {(members ?? []).map(m => {
-              const t = m.tenant as { name: string; email: string } | null
+              const t = m.tenant as unknown as { name: string; email: string } | null
               return (
                 <div key={m.id} className="flex items-center gap-3 px-5 py-3">
                   <div className="h-8 w-8 rounded-full bg-violet-100 flex items-center justify-center shrink-0">
