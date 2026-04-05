@@ -26,7 +26,7 @@ export default function NewOrgPage() {
     setError('')
     startTransition(async () => {
       const res = await createOrgAction({ name: name.trim(), slug: slug.trim() })
-      if ('error' in res) { setError(res.error); return }
+      if ('error' in res) { setError(res.error ?? 'Something went wrong'); return }
       router.push(`/org/${res.slug}`)
     })
   }

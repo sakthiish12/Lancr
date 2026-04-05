@@ -55,7 +55,7 @@ export default async function AcceptInvitePage({ params }: { params: Promise<{ t
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const org = invite.org as { name: string; slug: string } | null
+  const org = invite.org as unknown as { name: string; slug: string } | null
 
   // Not logged in — show sign-in prompt
   if (!user) {
