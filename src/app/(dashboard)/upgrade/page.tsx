@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/Header'
 import { CheckCircle, X, Zap } from 'lucide-react'
 import { FREE_FEATURES, PRO_FEATURES, FREE_CLIENT_LIMIT, FREE_INVOICE_LIMIT } from '@/lib/plan'
 
-export default async function UpgradePage(props: { searchParams?: Promise<{ error?: string }> }) {
+export default async function UpgradePage(props: { searchParams?: Promise<{ error?: string; upgraded?: string }> }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
@@ -13,6 +13,7 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
   const isPro = tenant?.plan === 'pro'
   const searchParams = await (props.searchParams ?? Promise.resolve({}))
   const stripeError = searchParams?.error
+  const justUpgraded = searchParams?.upgraded === 'true'
 
   return (
     <div>
@@ -23,6 +24,13 @@ export default async function UpgradePage(props: { searchParams?: Promise<{ erro
           <div className="rounded-xl border border-red-200 bg-red-50 p-4">
             <p className="text-sm font-medium text-red-800">Payment setup error</p>
             <p className="text-xs text-red-600 mt-1">{stripeError}</p>
+          </div>
+        )}
+
+        {justUpgraded && !isPro && (
+          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+            <p className="text-sm font-medium text-blue-800">Payment received! Activating your Pro plan…</p>
+            <p className="text-xs text-blue-600 mt-1">Your account will upgrade in a moment. Refresh the page if it doesn&apos;t update.</p>
           </div>
         )}
 
